@@ -21,7 +21,7 @@ namespace IBM.Application.Services
         public TransactionService(IComunicationRepository comunication, ILogger<TransactionService> log)
         {
             this.comunication = comunication;
-            this.log = log;
+            this.log = log; 
         }
         public async Task<IEnumerable<Transaction>> GetTransactionsAsync()
         {
