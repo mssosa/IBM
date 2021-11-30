@@ -1,6 +1,6 @@
 ﻿namespace IBM.Core.Entities
 {
-    public class Rate
+    public class Rate : EntityBase
     {
         public string from { get; set; }
         public string to { get; set; }

@@ -1,11 +1,17 @@
-﻿using IBM.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using IBM.Core.Entities;
+using IBM.Core.Interfaces;
+using IBM.Infrastructure.Data;
 
 namespace IBM.Infrastructure.Repositories
 {
-    internal class TransactionRepository //: IRepository<Transaction>
+    public class TransactionRepository : GenericRepository<Transaction>, ITransactionRepository
     {
+        private readonly IBMContext context;
+
+        public TransactionRepository(IBMContext context) : base(context)
+        {
+            this.context = context;
+        }
+
     }
 }

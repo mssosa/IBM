@@ -23,8 +23,8 @@ namespace IBM.Infrastructure.ExternalComunication
 
         public async Task<HttpResponseMessage> ReadExternalApiAsync(string urlParameter)
         {
-            log.LogInformation($"Realizando la transaccion a {httpClient.BaseAddress}/{Resources.PARAMETRO_URL_TRANSACTIONS}");
-            var result = await httpClient.GetAsync(Resources.PARAMETRO_URL_RATES);
+            log.LogInformation($"Realizando la transaccion a {httpClient.BaseAddress}/{urlParameter}");
+            var result = await httpClient.GetAsync(urlParameter);
             log.LogInformation($"Respuesta =>{result.StatusCode}");
             return result;
 

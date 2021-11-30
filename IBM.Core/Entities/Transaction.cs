@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IBM.Core.Entities
 {
-    public class Transaction
+    public class Transaction : EntityBase
     {
         public string sku { get; set; }
         public string amount { get; set; }

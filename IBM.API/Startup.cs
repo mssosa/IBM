@@ -2,11 +2,14 @@ using IBM.Application.Interfaces;
 using IBM.Application.Services;
 using IBM.Core.Interfaces;
 using IBM.Core.ObjectValues;
+using IBM.Infrastructure.Data;
 using IBM.Infrastructure.ExternalComunication;
+using IBM.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -36,6 +39,9 @@ namespace IBM.API
             services.AddHttpClient();
             services.AddControllers();
 
+            services.AddDbContext<IBMContext>(
+                 m => m.UseSqlServer(Configuration.GetConnectionString("IBMconnectionString")), ServiceLifetime.Singleton);
+
             services.AddHttpClient<IComunicationRepository, ExternalApiRepository>(c => c.BaseAddress = new Uri(uri.Value));
 
             services.AddMvc();
@@ -44,6 +50,9 @@ namespace IBM.API
             services.AddTransient<IRateService, RateService>();
 
             services.AddSingleton<IRounder, BankersRounding>();
+
+            services.AddTransient<IRateRepository, RateRepository>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
 
         }
 
