@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IBM.Infrastructure.Migrations
 {
     [DbContext(typeof(IBMContext))]
-    [Migration("20211201080708_Initial")]
+    [Migration("20211201164353_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,8 +45,8 @@ namespace IBM.Infrastructure.Migrations
                     b.Property<string>("from")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("rate")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("rate")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("to")
                         .HasColumnType("nvarchar(max)");
@@ -66,8 +66,8 @@ namespace IBM.Infrastructure.Migrations
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
-                    b.Property<string>("amount")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("amount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("currency")
                         .HasColumnType("nvarchar(max)");

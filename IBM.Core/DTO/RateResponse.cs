@@ -11,7 +11,7 @@ namespace IBM.Core.DTO
         {
             from = item.from;
             to = item.to;
-            rate = item.rate;
+            rate = rate.ToString();
         }
 
         public string from { get; set; }

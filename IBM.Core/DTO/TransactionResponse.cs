@@ -11,7 +11,7 @@ namespace IBM.Core.DTO
         public TransactionResponse(Transaction item)
         {
             sku = item.sku;
-            amount = item.amount;
+            amount = item.amount.ToString();
             currency = item.currency;
         }
 

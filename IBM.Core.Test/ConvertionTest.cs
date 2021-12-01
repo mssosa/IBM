@@ -20,32 +20,32 @@ namespace IBM.Core.Test
                  {
                     from= "EUR",
                     to= "AUD",
-                    rate= "1.01"
+                    rate= 1.01m
                   },
                 new Rate(){
                     from= "AUD",
                     to= "EUR",
-                    rate= "0.99"
+                    rate= 0.99m
                 },
                 new Rate(){
                     from= "EUR",
                     to= "CAD",
-                    rate= "1.14"
+                    rate= 1.14m
                 },
                 new Rate(){
                     from= "CAD",
                     to= "EUR",
-                    rate= "0.88"
+                    rate= 0.88m
                 },
                 new Rate(){
                     from= "AUD",
                     to= "USD",
-                    rate= "0.88"
+                    rate= 0.88m
                 },
                 new Rate(){
                     from= "USD",
                     to= "AUD",
-                    rate= "1.14"
+                    rate= 1.14m
                 }
             };
 

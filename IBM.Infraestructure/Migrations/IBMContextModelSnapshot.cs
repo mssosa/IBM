@@ -43,8 +43,8 @@ namespace IBM.Infrastructure.Migrations
                     b.Property<string>("from")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("rate")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("rate")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("to")
                         .HasColumnType("nvarchar(max)");
@@ -64,8 +64,8 @@ namespace IBM.Infrastructure.Migrations
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
-                    b.Property<string>("amount")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("amount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("currency")
                         .HasColumnType("nvarchar(max)");

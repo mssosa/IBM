@@ -27,7 +27,7 @@ namespace IBM.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     from = table.Column<string>(nullable: true),
                     to = table.Column<string>(nullable: true),
-                    rate = table.Column<string>(nullable: true)
+                    rate = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,8 +41,8 @@ namespace IBM.Infrastructure.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     sku = table.Column<string>(nullable: true),
-                    amount = table.Column<string>(nullable: true),
                     currency = table.Column<string>(nullable: true),
+                    amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ProductID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
