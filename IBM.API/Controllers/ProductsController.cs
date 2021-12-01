@@ -1,32 +1,33 @@
 ﻿using IBM.Application.Interfaces;
-using IBM.Core.Entities;
-using Microsoft.AspNetCore.Http;
+using IBM.Core.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace IBM.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RatesController : ControllerBase
+    public class ProductsController : ControllerBase
     {
-        private readonly IRateService services;
-        private readonly ILogger<RatesController> log;
+        private readonly IProductService services;
+        private readonly ILogger<ProductsController> log;
 
-        public RatesController(IRateService service, ILogger<RatesController> log)
+        public ProductsController(IProductService service, ILogger<ProductsController> log)
         {
             this.services = service;
             this.log = log;
         }
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Rate>>> Get()
+
+        [HttpGet("{sku}")]
+        public async Task<ActionResult<ProductResponse>> GetAsync([FromHeader] ProductRequest request)
         {
             log.LogInformation("Iniciando consulta");
-            var result = await services.GetRatesAsync();
-            if (!result.Any())
+            var result = await services.GetProductBySKUAsync(request);
+            if (!result.transactions.Any())
             {
                 string message = "No hay elementos para mostrar";
                 log.LogInformation(message);

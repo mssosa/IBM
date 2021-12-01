@@ -11,5 +11,6 @@ namespace IBM.Infrastructure.Data
         }
         public DbSet<Rate> Rates { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }

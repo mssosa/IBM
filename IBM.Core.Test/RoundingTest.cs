@@ -19,7 +19,7 @@ namespace IBM.Core.Test
         [InlineData(2.589,2.59)]
         [InlineData(2.999,3)]
         [InlineData(10.158,10.16)]
-        public void SholdBeOKCasesRounderBank(double valueIN, double valueOUT)
+        public void SholdBeOKCasesRounderBank(decimal valueIN, decimal valueOUT)
         {
             var rouderer = new BankersRounding();
             Assert.Equal(rouderer.RoundValue(valueIN), valueOUT);

@@ -14,12 +14,12 @@ namespace IBM.Application.Services
 {
     public class RateService : IRateService, IReadResponse<Rate>
     {
-        private readonly IComunicationRepository comunication;
+        private readonly IExternalProviderRepository comunication;
         private readonly ILogger<RateService> log;
         private readonly IConfiguration configuration;
         private readonly IRateRepository repository;
 
-        public RateService(IComunicationRepository comunication, ILogger<RateService> log, IConfiguration configuration, IRateRepository repository)
+        public RateService(IExternalProviderRepository comunication, ILogger<RateService> log, IConfiguration configuration, IRateRepository repository)
         {
             this.comunication = comunication;
             this.log = log;

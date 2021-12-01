@@ -1,4 +1,5 @@
 ﻿using IBM.Application.Interfaces;
+using IBM.Core.DTO;
 using IBM.Core.Entities;
 using IBM.Core.Interfaces;
 using IBM.Core.ObjectValues;
@@ -16,36 +17,46 @@ namespace IBM.Application.Services
 {
     public class TransactionService : ITransactionService, IReadResponse<Transaction>
     {
-        private readonly IComunicationRepository comunication;
+        private readonly IExternalProviderRepository comunication;
         private readonly ILogger<TransactionService> log;
         private readonly IConfiguration configuration;
         private readonly ITransactionRepository repository;
+        private readonly IProductService productService;
 
-        public TransactionService(IComunicationRepository comunication, ILogger<TransactionService> log, IConfiguration configuration, ITransactionRepository repository)
+        public TransactionService(IExternalProviderRepository comunication, ILogger<TransactionService> log, IConfiguration configuration, ITransactionRepository repository, IProductService productService)
         {
             this.comunication = comunication;
             this.log = log;
             this.configuration = configuration;
             this.repository = repository;
+            this.productService = productService;
         }
-        public async Task<IEnumerable<Transaction>> GetTransactionsAsync()
+
+        public async Task ClearData()
+        {
+            await repository.ClearData();
+        }
+
+        public async Task<IEnumerable<TransactionResponse>> GetTransactionsAsync()
         {
             var uri = configuration.GetSection("HerokuAPI_TransacitionService").Value;
 
             log.LogInformation("Iniciando comunicación");
             var response = await comunication.ReadExternalApiAsync(uri);
-            IEnumerable<Transaction> result = await ReadResponse(response);
+            IEnumerable<Transaction> resultFromAPI = await ReadResponse(response);
             
-            if(result.Any())
+            if(resultFromAPI.Any())
             {
                 log.LogDebug("Almacenando en la base de datos");
-                await repository.AddRangeAsync(result);
+                await productService.RecordTransactionsForEachProductAsnyc(resultFromAPI);
                 log.LogDebug("Almacenando finalizado");
             }
-                
-            return result;
+
+            var returnResponse = Factory.PrepareListTransactionResponse(resultFromAPI);
+
+            return returnResponse;
         }
-        //TODO MEJORAR ESTO
+
         public async Task<IEnumerable<Transaction>> ReadResponse(HttpResponseMessage response)
         {
             var json = await response.Content.ReadAsStringAsync();

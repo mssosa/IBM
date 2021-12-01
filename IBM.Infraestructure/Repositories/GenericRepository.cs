@@ -12,13 +12,12 @@ namespace IBM.Infrastructure.Repositories
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         private readonly IBMContext context;
-        private readonly ILogger log;
 
         public GenericRepository(IBMContext context)
         {
             this.context = context;
         }
-        public async Task AddRangeAsync(IEnumerable<TEntity> listToAdd)
+        public virtual async Task AddRangeAsync(IEnumerable<TEntity> listToAdd)
         {
             await ClearData();
             await context.Set<TEntity>().AddRangeAsync(listToAdd);

@@ -18,9 +18,6 @@ namespace IBM.Infrastructure.Repositories
             this.context = context;
         }
 
-        public async Task<Rate> GetBySKUAsync(string sku)
-        {
-            return await context.Set<Rate>().FindAsync(sku);
-        }
+       
     }
 }

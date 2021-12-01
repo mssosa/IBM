@@ -8,14 +8,14 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBM.Infrastructure.ExternalComunication
+namespace IBM.Infrastructure.ExternalProviders
 {
-    public class ExternalApiRepository : IComunicationRepository
+    public class ExternalProviderRepository : IExternalProviderRepository
     {
         private readonly HttpClient httpClient;
-        private readonly ILogger<ExternalApiRepository> log;
+        private readonly ILogger<ExternalProviderRepository> log;
 
-        public ExternalApiRepository(HttpClient httpClient, ILogger<ExternalApiRepository> log)
+        public ExternalProviderRepository(HttpClient httpClient, ILogger<ExternalProviderRepository> log)
         {
             this.httpClient = httpClient;
             this.log = log;

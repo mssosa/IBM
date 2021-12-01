@@ -3,7 +3,7 @@ using IBM.Application.Services;
 using IBM.Core.Interfaces;
 using IBM.Core.ObjectValues;
 using IBM.Infrastructure.Data;
-using IBM.Infrastructure.ExternalComunication;
+using IBM.Infrastructure.ExternalProviders;
 using IBM.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,26 +42,29 @@ namespace IBM.API
             services.AddDbContext<IBMContext>(
                  m => m.UseSqlServer(Configuration.GetConnectionString("IBMconnectionString")), ServiceLifetime.Singleton);
 
-            services.AddHttpClient<IComunicationRepository, ExternalApiRepository>(c => c.BaseAddress = new Uri(uri.Value));
+            services.AddHttpClient<IExternalProviderRepository, ExternalProviderRepository>(c => c.BaseAddress = new Uri(uri.Value));
 
             services.AddMvc();
 
             services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IRateService, RateService>();
+            services.AddTransient<IProductService, ProductService>();
 
             services.AddSingleton<IRounder, BankersRounding>();
 
             services.AddTransient<IRateRepository, RateRepository>();
             services.AddTransient<ITransactionRepository, TransactionRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBMContext context)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                context.Database.Migrate();
             }
 
             app.UseHttpsRedirection();

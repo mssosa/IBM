@@ -1,4 +1,5 @@
-﻿using IBM.Core.Entities;
+﻿using IBM.Core.DTO;
+using IBM.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,7 @@ namespace IBM.Application.Interfaces
 {
     public interface ITransactionService
     {
-        Task<IEnumerable<Transaction>> GetTransactionsAsync();
+        Task<IEnumerable<TransactionResponse>> GetTransactionsAsync();
+        Task ClearData();
     }
 }

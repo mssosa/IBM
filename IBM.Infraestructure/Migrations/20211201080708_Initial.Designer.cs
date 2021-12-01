@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IBM.Infrastructure.Migrations
 {
     [DbContext(typeof(IBMContext))]
-    [Migration("20211129233801_Initial")]
+    [Migration("20211201080708_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,6 +19,21 @@ namespace IBM.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "3.1.21")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("IBM.Core.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("sku")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+                });
 
             modelBuilder.Entity("IBM.Core.Entities.Rate", b =>
                 {
@@ -48,6 +63,9 @@ namespace IBM.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
                     b.Property<string>("amount")
                         .HasColumnType("nvarchar(max)");
 
@@ -59,7 +77,18 @@ namespace IBM.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductID");
+
                     b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("IBM.Core.Entities.Transaction", b =>
+                {
+                    b.HasOne("IBM.Core.Entities.Product", "Product")
+                        .WithMany("transactions")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

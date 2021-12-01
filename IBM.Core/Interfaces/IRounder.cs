@@ -6,6 +6,6 @@ namespace IBM.Core.Interfaces
 {
     public interface IRounder
     {
-        double RoundValue(double valueToRound);
+        decimal RoundValue(decimal valueToRound);
     }
 }

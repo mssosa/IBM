@@ -7,7 +7,7 @@ namespace IBM.Core.ObjectValues
 {
     public class BankersRounding : IRounder
     {
-        public double RoundValue(double valueToRound)
+        public decimal RoundValue(decimal valueToRound)
         {
             return Math.Round(valueToRound, 2); ;
         }

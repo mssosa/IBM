@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IBM.Core.Interfaces
 {
-    public interface IComunicationRepository
+    public interface IExternalProviderRepository
     {
         Task<HttpResponseMessage> ReadExternalApiAsync(string urlParameter);
     }

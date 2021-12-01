@@ -1,4 +1,5 @@
 ﻿using IBM.Application.Interfaces;
+using IBM.Core.DTO;
 using IBM.Core.Entities;
 using IBM.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -17,13 +18,13 @@ namespace IBM.API.Controllers
         private readonly ITransactionService services;
         private readonly ILogger<TransactionsController> log;
 
-        public TransactionsController(ITransactionService transactionService, ILogger<TransactionsController> logger)
+        public TransactionsController(ITransactionService service, ILogger<TransactionsController> log)
         {
-            this.services = transactionService;
-            this.log = logger;
+            this.services = service;
+            this.log = log;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Transaction>>> Get()
+        public async Task<ActionResult<IEnumerable<TransactionResponse>>> GetAsync()
         {
             log.LogInformation("Iniciando consulta");
             var result = await services.GetTransactionsAsync();
@@ -37,7 +38,6 @@ namespace IBM.API.Controllers
             log.LogInformation("Todo salio OK.");
             return Ok(result);
         }
-        //TODO --> GetOFFLINE!
-        //
+        
     }
 }

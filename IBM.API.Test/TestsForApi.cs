@@ -1,6 +1,6 @@
 using IBM.API.Controllers;
 using IBM.Core.Entities;
-using IBM.Infrastructure.ExternalComunication;
+using IBM.Infrastructure.ExternalProviders;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;

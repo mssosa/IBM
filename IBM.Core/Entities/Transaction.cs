@@ -10,6 +10,9 @@ namespace IBM.Core.Entities
         public string amount { get; set; }
         public string currency { get; set; }
 
+        public Product Product { get; set; }
+        public int ProductID { get; set; }
+
 
     }
 
