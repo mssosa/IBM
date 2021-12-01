@@ -24,7 +24,21 @@ namespace IBM.Application.Services
             this.repository = repository;
             this.transactionRepository = transactionRepository;
         }
-        public async Task<ProductResponse> GetProductBySKUAsync(ProductRequest request)
+        public async Task<IEnumerable<ProductOnlyResponse>> GetProductsAsync()
+        {
+
+            var productFinded = await repository.GetAllAsync();
+
+            if (productFinded == null)
+            {
+                return Factory.PrepareEmptyListProductOnlyResponse();
+            }
+
+            return Factory.PrepareListProductOnlyResponse(productFinded);
+        }
+
+       
+        public async Task<ProductResponse> GetProductAsync(ProductRequest request)
         {
             if(string.IsNullOrEmpty(request.sku))
                 throw new ArgumentNullException(nameof(request.sku));
@@ -35,8 +49,23 @@ namespace IBM.Application.Services
             {
                 return Factory.PrepareEmptyProductResponse();
             }
-            
+
+            var productsInEUR = ConvertionCurrencyServices(productFinded);
+
             return Factory.PrepareProductResponse(productFinded);
+        }
+        //REFACTOR THIS
+        private Product ConvertionCurrencyServices(Product product)
+        {
+            var resultProduct = Factory.PrepareEmptyProduct();
+
+            var listOfOnlyEur = product.transactions.Where(x=>x.currency.ToUpper().Equals(CurrencyConstants.EUR)).ToList();
+            var listNotEurCurrency = product.transactions.Where(x=>x.currency.ToUpper().Distinct(CurrencyConstants.EUR)).ToList();
+
+
+            return resultProduct;
+
+
         }
 
         public async Task RecordTransactionsForEachProductAsnyc(IEnumerable<Transaction> listToAdd)
@@ -58,5 +87,7 @@ namespace IBM.Application.Services
         {
             await transactionRepository.ClearData();
         }
+
+      
     }
 }

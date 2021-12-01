@@ -37,7 +37,8 @@ namespace IBM.API
             var uri = Configuration.GetSection("HerokuAPI");
 
             services.AddHttpClient();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
 
             services.AddDbContext<IBMContext>(
                  m => m.UseSqlServer(Configuration.GetConnectionString("IBMconnectionString")), ServiceLifetime.Singleton);

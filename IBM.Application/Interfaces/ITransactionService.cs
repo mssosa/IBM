@@ -9,7 +9,7 @@ namespace IBM.Application.Interfaces
 {
     public interface ITransactionService
     {
-        Task<IEnumerable<TransactionResponse>> GetTransactionsAsync();
+        Task<IEnumerable<TransactionResponse>> GetTransactionsAsync(bool offline = false);
         Task ClearData();
     }
 }

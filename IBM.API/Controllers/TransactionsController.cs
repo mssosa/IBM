@@ -38,6 +38,21 @@ namespace IBM.API.Controllers
             log.LogInformation("Todo salio OK.");
             return Ok(result);
         }
-        
+
+        [HttpGet("offline")]
+        public async Task<ActionResult<IEnumerable<TransactionResponse>>> GetOfflineAsync()
+        {
+            log.LogInformation("Iniciando consulta");
+            var result = await services.GetTransactionsAsync(true);
+            if (!result.Any())
+            {
+                string message = "No hay elementos para mostrar";
+                log.LogInformation(message);
+                return NotFound(message);
+            }
+
+            log.LogInformation("Todo salio OK.");
+            return Ok(result);
+        }
     }
 }

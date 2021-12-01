@@ -8,7 +8,6 @@ namespace IBM.Core.DTO
 
     public class TransactionResponse
     {
-
         public TransactionResponse(Transaction item)
         {
             sku = item.sku;

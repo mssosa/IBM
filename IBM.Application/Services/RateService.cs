@@ -1,4 +1,5 @@
 ﻿using IBM.Application.Interfaces;
+using IBM.Core.DTO;
 using IBM.Core.Entities;
 using IBM.Core.Interfaces;
 using IBM.Core.ObjectValues;
@@ -26,23 +27,40 @@ namespace IBM.Application.Services
             this.configuration = configuration;
             this.repository = repository;
         }
-        public async Task<IEnumerable<Rate>> GetRatesAsync()
+        public async Task<IEnumerable<RateResponse>> GetRatesAsync(bool offline = false)
         {
+            if(offline)
+            {
+                log.LogInformation("Iniciando modo offline");
+                
+                var repositoryResult = await repository.GetAllAsync();
+
+                log.LogDebug("Preparando respuesta");
+                var resultOfflineResponse = Factory.PrepareListOfRates(repositoryResult);
+                log.LogDebug($"Respuesta completa => Registros: {resultOfflineResponse.Count}");
+
+                return resultOfflineResponse;
+            }
+
             var uri = configuration.GetSection("HerokuAPI_RatesService").Value;
             log.LogInformation("Iniciando comunicación");
             var response = await comunication.ReadExternalApiAsync(uri);
-            IEnumerable<Rate> result = await ReadResponse(response);
+            IEnumerable<Rate> resultAPIReaded = await ReadResponse(response);
 
-            if (result.Any())
+            if (resultAPIReaded.Any())
             {
                 log.LogDebug("Almacenando en la base de datos");
-                await repository.AddRangeAsync(result);
+                await repository.AddRangeAsync(resultAPIReaded);
                 log.LogDebug("Almacenando finalizado");
             }
 
-            return result;
+            log.LogDebug("Preparando respuesta");
+            var resultResponse = Factory.PrepareListOfRates(resultAPIReaded);
+            log.LogDebug($"Respuesta completa => Registros: {resultResponse.Count}");
+
+            return resultResponse;
         }
-        //TODO MEJORAR ESTO
+        
         public async Task<IEnumerable<Rate>> ReadResponse(HttpResponseMessage response)
         {
             var json = await response.Content.ReadAsStringAsync();

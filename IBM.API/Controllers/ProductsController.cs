@@ -22,11 +22,29 @@ namespace IBM.API.Controllers
             this.log = log;
         }
 
+
+        [HttpGet]
+        public async Task<ActionResult<ProductOnlyResponse>> GetAsync()
+        {
+            log.LogInformation("Iniciando consulta");
+            var result = await services.GetProductsAsync();
+            if (!result.Any())
+            {
+                string message = "No hay elementos para mostrar";
+                log.LogInformation(message);
+                return NotFound(message);
+            }
+
+            log.LogInformation("Todo salio OK.");
+            return Ok(result);
+        }
+
+
         [HttpGet("{sku}")]
         public async Task<ActionResult<ProductResponse>> GetAsync([FromHeader] ProductRequest request)
         {
             log.LogInformation("Iniciando consulta");
-            var result = await services.GetProductBySKUAsync(request);
+            var result = await services.GetProductAsync(request);
             if (!result.transactions.Any())
             {
                 string message = "No hay elementos para mostrar";

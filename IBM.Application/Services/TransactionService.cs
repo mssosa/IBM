@@ -37,8 +37,20 @@ namespace IBM.Application.Services
             await repository.ClearData();
         }
 
-        public async Task<IEnumerable<TransactionResponse>> GetTransactionsAsync()
+        public async Task<IEnumerable<TransactionResponse>> GetTransactionsAsync(bool offline = false)
         {
+            if(offline)
+            {
+                log.LogInformation("Offline mode");
+                var result = await repository.GetAllAsync();
+
+                log.LogDebug($"Preparando respuesta");
+                var resultOfflineResponse = Factory.PrepareListTransactionResponse(result);
+                log.LogDebug($"Respuesta completa => Registros: {resultOfflineResponse.Count}");
+
+                return resultOfflineResponse;
+            }
+
             var uri = configuration.GetSection("HerokuAPI_TransacitionService").Value;
 
             log.LogInformation("Iniciando comunicación");
@@ -52,9 +64,11 @@ namespace IBM.Application.Services
                 log.LogDebug("Almacenando finalizado");
             }
 
-            var returnResponse = Factory.PrepareListTransactionResponse(resultFromAPI);
+            log.LogDebug($"Preparando respuesta");
+            var resultResponse = Factory.PrepareListTransactionResponse(resultFromAPI);
+            log.LogDebug($"Respuesta completa => Registros: {resultResponse.Count}");
 
-            return returnResponse;
+            return resultResponse;
         }
 
         public async Task<IEnumerable<Transaction>> ReadResponse(HttpResponseMessage response)

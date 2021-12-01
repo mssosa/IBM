@@ -7,7 +7,8 @@ namespace IBM.Application.Interfaces
 {
     public interface IProductService
     {
-        Task<ProductResponse> GetProductBySKUAsync(ProductRequest request);
+        Task<IEnumerable<ProductOnlyResponse>> GetProductsAsync();
+        Task<ProductResponse> GetProductAsync(ProductRequest request);
         Task RecordTransactionsForEachProductAsnyc(IEnumerable<Transaction> result);
         Task ClearTransactionData();
     }

@@ -22,10 +22,25 @@ namespace IBM.API.Controllers
             this.log = log;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Rate>>> Get()
+        public async Task<ActionResult<IEnumerable<Rate>>> GetAsync()
         {
             log.LogInformation("Iniciando consulta");
             var result = await services.GetRatesAsync();
+            if (!result.Any())
+            {
+                string message = "No hay elementos para mostrar";
+                log.LogInformation(message);
+                return NotFound(message);
+            }
+
+            log.LogInformation("Todo salio OK.");
+            return Ok(result);
+        }
+        [HttpGet("offline")]
+        public async Task<ActionResult<IEnumerable<Rate>>> GetOfflineAsync()
+        {
+            log.LogInformation("Iniciando consulta");
+            var result = await services.GetRatesAsync(true);
             if (!result.Any())
             {
                 string message = "No hay elementos para mostrar";
