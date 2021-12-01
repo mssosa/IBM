@@ -14,11 +14,10 @@ namespace IBM.Core.Entities
         public Product(string productSKU)
         {
             sku = productSKU;
-            transactions = new List<Transaction>(); 
         }
 
         public string sku { get; set; }
 
-        public IEnumerable<Transaction> transactions { get; set; }
+        public IEnumerable<Transaction> transactions { get; set; } = new List<Transaction>();
     }
 }

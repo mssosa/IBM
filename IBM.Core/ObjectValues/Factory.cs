@@ -15,10 +15,17 @@ namespace IBM.Core.ObjectValues
             return new Product(productSKU);
         }
         public static ProductResponse PrepareEmptyProductResponse() { return new ProductResponse(); }
+
+        internal static Rate PrepareEmptyRate()
+        {
+            return new Rate();
+        }
+
         public static ProductResponse PrepareProductResponse(Product productFinded)
         {
             ProductResponse product = new ProductResponse();
             product.currency = CurrencyConstants.EUR;
+            product.sum = productFinded.transactions.Sum(x=>x.amount); //REFACTOR
             product.total = productFinded.transactions.Count();
             product.transactions = productFinded.transactions.ToList();
             return product;
@@ -92,6 +99,11 @@ namespace IBM.Core.ObjectValues
         public static List<TransactionResponse> PrepareListTransactionResponse()
         {
             return new List<TransactionResponse>();
+        }
+
+        public static Transaction PrepareTransaction()
+        {
+            return new Transaction();
         }
 
         public static List<RateResponse> PrepareListOfRates(IEnumerable<Rate> listToConvert)

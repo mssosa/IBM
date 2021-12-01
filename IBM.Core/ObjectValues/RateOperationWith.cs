@@ -2,7 +2,7 @@
 
 namespace IBM.Core.ObjectValues
 {
-    public class RateOperationWith
+    public class RateOperationWith : IRateOperationWith
     {
         private IRounder rounder;
 
@@ -10,33 +10,18 @@ namespace IBM.Core.ObjectValues
         {
             this.rounder = rounder;
         }
-        public decimal ConverTo(string from, string rate)
+        public decimal CalculateNewAmount(decimal from, decimal rate)
         {
-
-            decimal result,auxConvertedFrom,auxConvertedRate;
-
-            decimal.TryParse(from, out auxConvertedFrom);
-            decimal.TryParse(rate, out auxConvertedRate);
-            decimal fromConverted = auxConvertedFrom;
-            decimal rateConverted = auxConvertedRate; 
-            
-            result = fromConverted / rateConverted;
-
-            return  rounder.RoundValue(result);
+            decimal result;
+            result = from / rate;
+            return rounder.RoundValue(result);
         }
 
-        public decimal ConvertInverseTo(string from, string rate)
+        public decimal ConvertInverseTo(decimal from, decimal rate)
         {
 
-            decimal result, auxConvertedFrom, auxConvertedRate;
-
-            decimal.TryParse(from, out auxConvertedFrom);
-            decimal.TryParse(rate, out auxConvertedRate);
-            decimal fromConverted = auxConvertedFrom;
-            decimal rateConverted = auxConvertedRate;
-
-            result = fromConverted * rateConverted;
-
+            decimal result;
+            result = from * rate;
             return rounder.RoundValue(result);
         }
 

@@ -17,12 +17,18 @@ namespace IBM.Application.Services
         private readonly ILogger<RateService> log;
         private readonly IProductRepository repository;
         private readonly ITransactionRepository transactionRepository;
+        private readonly IRateRepository rateRepository;
+        private readonly IRateOperationWith rateOperations;
+        private readonly ICurrencyConverter currencyConverter;
 
-        public ProductService(ILogger<RateService> log, IProductRepository repository, ITransactionRepository transactionRepository)
+        public ProductService(ILogger<RateService> log, IProductRepository repository, ITransactionRepository transactionRepository,IRateRepository rateRepository, IRateOperationWith rateOperations, ICurrencyConverter currencyConverter)
         {
             this.log = log;
             this.repository = repository;
             this.transactionRepository = transactionRepository;
+            this.rateRepository = rateRepository;
+            this.rateOperations = rateOperations;
+            this.currencyConverter = currencyConverter;
         }
         public async Task<IEnumerable<ProductOnlyResponse>> GetProductsAsync()
         {
@@ -50,23 +56,41 @@ namespace IBM.Application.Services
                 return Factory.PrepareEmptyProductResponse();
             }
 
-            var productsInEUR = ConvertionCurrencyServices(productFinded);
+            var productsInEUR = await ConvertionCurrencyServices(productFinded);
+         
+            return Factory.PrepareProductResponse(productsInEUR);
+            
 
-            return Factory.PrepareProductResponse(productFinded);
+
         }
-        //REFACTOR THIS
-        private Product ConvertionCurrencyServices(Product product)
+        
+        private async Task<Product> ConvertionCurrencyServices(Product product)
         {
+            var rates = await rateRepository.GetAllAsync();
             var resultProduct = Factory.PrepareEmptyProduct();
+            resultProduct.sku=product.sku;
 
             var listOfOnlyEur = product.transactions.Where(x=>x.currency.ToUpper().Equals(CurrencyConstants.EUR)).ToList();
-            //var listNotEurCurrency = product.transactions.Where(x=>x.currency.ToUpper().Distinct(CurrencyConstants.EUR)).ToList();
+            var listNotEurCurrency = product.transactions.Where(x=>x.currency.ToUpper() != CurrencyConstants.EUR).ToList();
 
+
+            foreach (var item in listNotEurCurrency)
+            {
+                var productConverted = currencyConverter.ConvertToEUR(item,rates);
+                if (productConverted != null)
+                    listOfOnlyEur.Add(productConverted);
+            }
+            
+            var resultList = new List<Transaction>();
+            resultList.AddRange(listOfOnlyEur);
+
+            resultProduct.transactions = resultList;
 
             return resultProduct;
 
 
         }
+
 
         public async Task RecordTransactionsForEachProductAsnyc(IEnumerable<Transaction> listToAdd)
         {

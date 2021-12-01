@@ -20,7 +20,10 @@ namespace IBM.Infrastructure.Repositories
 
         public async Task<Product> GetBySKUAsync(string sku)
         {
-            return await context.Products.Where(x=>x.sku.Equals(sku)).FirstOrDefaultAsync();
+            return await context.Products
+                .Include(r=>r.transactions)
+                .Where(x=>x.sku.Equals(sku))
+                .FirstOrDefaultAsync();
         }
       
     }
