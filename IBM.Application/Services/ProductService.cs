@@ -60,7 +60,7 @@ namespace IBM.Application.Services
             var resultProduct = Factory.PrepareEmptyProduct();
 
             var listOfOnlyEur = product.transactions.Where(x=>x.currency.ToUpper().Equals(CurrencyConstants.EUR)).ToList();
-            var listNotEurCurrency = product.transactions.Where(x=>x.currency.ToUpper().Distinct(CurrencyConstants.EUR)).ToList();
+            //var listNotEurCurrency = product.transactions.Where(x=>x.currency.ToUpper().Distinct(CurrencyConstants.EUR)).ToList();
 
 
             return resultProduct;
