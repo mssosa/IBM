@@ -59,9 +59,6 @@ namespace IBM.Application.Services
             var productsInEUR = await ConvertionCurrencyServices(productFinded);
          
             return Factory.PrepareProductResponse(productsInEUR);
-            
-
-
         }
         
         private async Task<Product> ConvertionCurrencyServices(Product product)
@@ -72,7 +69,6 @@ namespace IBM.Application.Services
 
             var listOfOnlyEur = product.transactions.Where(x=>x.currency.ToUpper().Equals(CurrencyConstants.EUR)).ToList();
             var listNotEurCurrency = product.transactions.Where(x=>x.currency.ToUpper() != CurrencyConstants.EUR).ToList();
-
 
             foreach (var item in listNotEurCurrency)
             {
@@ -87,10 +83,7 @@ namespace IBM.Application.Services
             resultProduct.transactions = resultList;
 
             return resultProduct;
-
-
         }
-
 
         public async Task RecordTransactionsForEachProductAsnyc(IEnumerable<Transaction> listToAdd)
         {
@@ -111,7 +104,5 @@ namespace IBM.Application.Services
         {
             await transactionRepository.ClearData();
         }
-
-      
     }
 }

@@ -33,7 +33,7 @@ namespace IBM.Core.ObjectValues
 
             return result;
         }
-        private Transaction CascadeSearch(Transaction transaction, IEnumerable<Rate> rates, Transaction previousTransaction = null)
+        public Transaction CascadeSearch(Transaction transaction, IEnumerable<Rate> rates, Transaction previousTransaction = null)
         {
             var returnValue = Factory.PrepareTransaction();
 
@@ -50,14 +50,14 @@ namespace IBM.Core.ObjectValues
                 var firstTry = Factory.PrepareTransaction();
                 firstTry.sku = $"{transaction.sku}";
                 firstTry.currency = rateFromSearch;
-                firstTry.amount = 1;
+                firstTry.amount = calculator.CalculateNewAmount(transaction.amount, selectedRate.rate);
 
                 rateFinded = SearchDirect(firstTry.currency, CurrencyConstants.EUR, rates);
 
                 if (rateFinded != null)
                 {
                     returnValue.Product = transaction.Product;
-                    returnValue.amount = calculator.CalculateNewAmount(transaction.amount, rateFinded.rate);
+                    returnValue.amount = calculator.CalculateNewAmount(firstTry.amount, rateFinded.rate);
                     returnValue.currency = CurrencyConstants.EUR;
                     returnValue.sku = $"{transaction.sku}{CurrencyConstants.CalculatedValue}";
                     return returnValue;

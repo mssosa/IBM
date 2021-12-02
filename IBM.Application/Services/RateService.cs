@@ -32,13 +32,10 @@ namespace IBM.Application.Services
             if(offline)
             {
                 log.LogInformation("Iniciando modo offline");
-                
                 var repositoryResult = await repository.GetAllAsync();
-
                 log.LogDebug("Preparando respuesta");
                 var resultOfflineResponse = Factory.PrepareListOfRates(repositoryResult);
                 log.LogDebug($"Respuesta completa => Registros: {resultOfflineResponse.Count}");
-
                 return resultOfflineResponse;
             }
 

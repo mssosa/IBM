@@ -26,7 +26,6 @@ namespace IBM.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var uri = Configuration.GetSection("HerokuAPI");
@@ -40,8 +39,6 @@ namespace IBM.API
                  m => m.UseSqlServer(Configuration.GetConnectionString("IBMconnectionString")), ServiceLifetime.Singleton);
 
             services.AddHttpClient<IExternalProviderRepository, ExternalProviderRepository>(c => c.BaseAddress = new Uri(uri.Value));
-
-            //services.AddMvc();
 
             services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IRateService, RateService>();
@@ -57,10 +54,6 @@ namespace IBM.API
             services.AddSingleton<ICurrencyConverter, CurrencyConverter>();
 
         }
-
-
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBMContext context)
         {
             if (env.IsDevelopment())

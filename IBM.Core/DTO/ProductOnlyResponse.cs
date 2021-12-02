@@ -4,7 +4,6 @@ namespace IBM.Core.DTO
 {
     public class ProductOnlyResponse
     {
-
         public ProductOnlyResponse(Product item)
         {
             sku = item.sku;

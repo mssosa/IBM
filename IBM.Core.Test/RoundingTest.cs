@@ -19,7 +19,6 @@ namespace IBM.Core.Test
         {
             var rouderer = new BankersRounding();
             Assert.Equal(rouderer.RoundValue(valueIN), valueOUT);
-
         }
     }
 }

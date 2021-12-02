@@ -7,6 +7,5 @@ namespace IBM.Application.Interfaces
     public interface IReadResponse<T> where T : class
     {
         Task<IEnumerable<T>> ReadResponse(HttpResponseMessage response);
-
     }
 }

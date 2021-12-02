@@ -13,7 +13,7 @@ namespace IBM.Core.ObjectValues
         public decimal CalculateNewAmount(decimal from, decimal rate)
         {
             decimal result;
-            result = from / rate;
+            result = from * rate;
             return rounder.RoundValue(result);
         }
 
@@ -21,7 +21,7 @@ namespace IBM.Core.ObjectValues
         {
 
             decimal result;
-            result = from * rate;
+            result = from / rate;
             return rounder.RoundValue(result);
         }
 

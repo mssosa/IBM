@@ -1,4 +1,5 @@
 ﻿using IBM.Application.Interfaces;
+using IBM.Core.DTO;
 using IBM.Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +22,9 @@ namespace IBM.API.Controllers
             this.services = service;
             this.log = log;
         }
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Rate>>> GetAsync()
+        public async Task<ActionResult<IEnumerable<RateResponse>>> GetAsync()
         {
             log.LogInformation("Iniciando consulta");
             var result = await services.GetRatesAsync();
@@ -36,8 +38,9 @@ namespace IBM.API.Controllers
             log.LogInformation("Todo salio OK.");
             return Ok(result);
         }
+
         [HttpGet("offline")]
-        public async Task<ActionResult<IEnumerable<Rate>>> GetOfflineAsync()
+        public async Task<ActionResult<IEnumerable<RateResponse>>> GetOfflineAsync()
         {
             log.LogInformation("Iniciando consulta");
             var result = await services.GetRatesAsync(true);

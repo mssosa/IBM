@@ -17,7 +17,6 @@ namespace IBM.API.Controllers
     {
         private readonly ITransactionService services;
         private readonly ILogger<TransactionsController> log;
-
         public TransactionsController(ITransactionService service, ILogger<TransactionsController> log)
         {
             this.services = service;

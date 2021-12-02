@@ -2,6 +2,7 @@
 using IBM.Core.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,7 +25,7 @@ namespace IBM.API.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<ProductOnlyResponse>> GetAsync()
+        public async Task<ActionResult<IEnumerable<ProductOnlyResponse>>> GetAsync()
         {
             log.LogInformation("Iniciando consulta");
             var result = await services.GetProductsAsync();

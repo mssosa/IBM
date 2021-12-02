@@ -1,32 +1,37 @@
-﻿using IBM.Core.Interfaces;
-using IBM.Core.ObjectValues;
-using Moq;
+﻿using IBM.Core.ObjectValues;
 using Xunit;
 
 namespace IBM.Core.Test
 {
     public class TestForRateOperating
     {
-        [Fact]
-        public void ShoudCalculateNewAmountOK()
+        [Theory]
+        [InlineData(1      , 1.05 ,1.05)]
+        [InlineData(10     , 1.05 ,10.5)]
+        [InlineData(235.65 , 1.05 ,247.43)]
+        [InlineData(354.58 , 0.88 ,312.03)]
+        [InlineData(45     , 1.04 ,46.8)]
+        [InlineData(1535   , 1.37 ,2102.95)]
+        public void ShoudCalculateNewAmountOK(decimal numberToConvert, decimal rate,decimal expected)
         {
             var rounder = new BankersRounding();
             var ratesCalculator = new RateOperationWith(rounder);
-            var result = ratesCalculator.CalculateNewAmount(10, 1.01m);
-            var expected = 9.90m;
+            var result = ratesCalculator.CalculateNewAmount(numberToConvert, rate);
             Assert.Equal(result, expected);
-
         }
 
-        [Fact]
-        public void ShouldConvertInverseToOK()
+        [Theory]
+        [InlineData(1      , 1.05, 0.95)]
+        [InlineData(10     , 1.05, 9.52)]
+        [InlineData(235.65 , 1.05, 224.43)]
+        [InlineData(354.58 , 0.88, 402.93)]
+        [InlineData(45     , 1.04, 43.27)]
+        [InlineData(1535   , 1.37, 1120.44)]
+        public void ShouldConvertInverseToOK(decimal numberToConvert, decimal rate, decimal expected)
         {
-            //var rounder = new BankersRounding();
-            var rounder = new Mock<IRounder>();
-            rounder.Setup(c => c.RoundValue(10.10m)).Returns(10.10m);
-            var ratesCalculator = new RateOperationWith(rounder.Object);
-            var result = ratesCalculator.CalculateNewAmountInverse(10, 1.01m);
-            var expected = 10.10m;
+            var rounder = new BankersRounding();
+            var ratesCalculator = new RateOperationWith(rounder);
+            var result = ratesCalculator.CalculateNewAmountInverse(numberToConvert, rate);
             Assert.Equal(result, expected);
         }
     }

@@ -8,7 +8,6 @@ namespace IBM.API.Controllers
     [ApiController]
     public class TestErrorController : ControllerBase
     {
-        // GET: api/<TestErrorController>
         [HttpGet]
         public ActionResult Get()
         {
