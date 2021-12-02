@@ -29,11 +29,11 @@ namespace IBM.Core.ObjectValues
                 return returnValue;
             }
 
-            var result = CascadeSearch(item, rates, calculator);
+            var result = CascadeSearch(item, rates);
 
             return result;
         }
-        private Transaction CascadeSearch(Transaction transaction, IEnumerable<Rate> rates, IRateOperationWith calculator, Transaction previousTransaction = null)
+        private Transaction CascadeSearch(Transaction transaction, IEnumerable<Rate> rates, Transaction previousTransaction = null)
         {
             var returnValue = Factory.PrepareTransaction();
 
@@ -70,7 +70,7 @@ namespace IBM.Core.ObjectValues
                 transactionFROM.amount = calculator.CalculateNewAmount(transaction.amount, selectedRate.rate); 
 
 
-                var transcationCalculated = CascadeSearch(transactionFROM, rates, calculator, transaction);
+                var transcationCalculated = CascadeSearch(transactionFROM, rates, transaction);
                 if (transcationCalculated != null)
                     return transcationCalculated;
             }

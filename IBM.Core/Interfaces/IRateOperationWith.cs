@@ -2,7 +2,7 @@
 {
     public interface IRateOperationWith
     {
-        decimal ConvertInverseTo(decimal from, decimal rate);
+        decimal CalculateNewAmountInverse(decimal from, decimal rate);
         decimal CalculateNewAmount(decimal from, decimal rate);
     }
 }

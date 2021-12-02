@@ -9,12 +9,18 @@ namespace IBM.Core.ObjectValues
 {
     public class Factory
     {
-        public static Product PrepareProduct() { return new Product(); }
+        public static Product PrepareProduct()
+        {
+            return new Product();
+        }
         public static Product PrepareProduct(string productSKU)
         {
             return new Product(productSKU);
         }
-        public static ProductResponse PrepareEmptyProductResponse() { return new ProductResponse(); }
+        public static ProductResponse PrepareEmptyProductResponse() 
+        {
+            return new ProductResponse(); 
+        }
 
         internal static Rate PrepareEmptyRate()
         {
@@ -25,7 +31,7 @@ namespace IBM.Core.ObjectValues
         {
             ProductResponse product = new ProductResponse();
             product.currency = CurrencyConstants.EUR;
-            product.sum = productFinded.transactions.Sum(x=>x.amount); //REFACTOR
+            product.sum = productFinded.transactions.Sum(x => x.amount); //REFACTOR
             product.total = productFinded.transactions.Count();
             product.transactions = productFinded.transactions.ToList();
             return product;

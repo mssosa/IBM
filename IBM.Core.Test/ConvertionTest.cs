@@ -1,6 +1,8 @@
-﻿using IBM.Core.Entities;
+﻿using Castle.Core.Logging;
+using IBM.Core.Entities;
 using IBM.Core.Interfaces;
 using IBM.Core.ObjectValues;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,8 +51,57 @@ namespace IBM.Core.Test
                 }
             };
 
+
         }
 
+
+        [Fact]
+        public void ShouldConvertOKDirectlyAudToEur()
+        {
+            var rate = 1.01m;
+            var calculator = new Mock<IRateOperationWith>();
+            var transaction = new Transaction()
+            {
+                amount = 10,
+                currency = "AUD",
+                sku = "P1234"
+            };
+            calculator.Setup(c => c.CalculateNewAmount(transaction.amount, rate)).Returns(9.90m);
+
+            var converted = new CurrencyConverter(calculator.Object);
+
+            var result = converted.ConvertToEUR(transaction, rates);
+
+            Assert.NotNull(result);
+            Assert.Equal($"{transaction.sku}-[calculated]",result.sku);
+            Assert.Equal("EUR",result.currency);
+            var expectedValue = 9.90m;
+            Assert.Equal(result.amount,expectedValue);
+        }
+
+        [Fact]
+        public void ShouldConvertOKInderectlyUSDToEur()
+        {
+            var rate = 1.01m;
+            var calculator = new Mock<IRateOperationWith>();
+            var transaction = new Transaction()
+            {
+                amount = 10,
+                currency = "USD",
+                sku = "P1234"
+            };
+            calculator.Setup(c => c.CalculateNewAmount(transaction.amount, rate)).Returns(9.90m);
+
+            var converted = new CurrencyConverter(calculator.Object);
+
+            var result = converted.ConvertToEUR(transaction, rates);
+
+            Assert.NotNull(result);
+            Assert.Equal($"{transaction.sku}-[calculated]", result.sku);
+            Assert.Equal("EUR", result.currency);
+            var expectedValue = 9.90m;
+            Assert.Equal(result.amount, expectedValue);
+        }
 
 
     }

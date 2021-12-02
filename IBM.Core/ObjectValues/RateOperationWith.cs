@@ -17,7 +17,7 @@ namespace IBM.Core.ObjectValues
             return rounder.RoundValue(result);
         }
 
-        public decimal ConvertInverseTo(decimal from, decimal rate)
+        public decimal CalculateNewAmountInverse(decimal from, decimal rate)
         {
 
             decimal result;
