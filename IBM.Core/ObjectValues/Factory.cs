@@ -21,7 +21,6 @@ namespace IBM.Core.ObjectValues
         {
             return new ProductResponse(); 
         }
-
         internal static Rate PrepareEmptyRate()
         {
             return new Rate();
